@@ -1,0 +1,561 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    background: #f0f2f5;
+}
+
+/* Sidebar Stilleri */
+.sidebar {
+    width: 30%;
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #f0f2f5;
+    min-width: 0;
+}
+
+.user-img img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.header-icons i {
+    color: #54656f;
+    font-size: 1.2em;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.search-box {
+    padding: 10px;
+    background: #ffffff;
+}
+
+.input-wrapper {
+    background: #f0f2f5;
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+}
+
+    .input-wrapper i {
+        color: #54656f;
+    }
+
+    .input-wrapper input {
+        border: none;
+        background: none;
+        outline: none;
+        margin-left: 10px;
+        width: 100%;
+    }
+
+/* Sohbet Listesi Stilleri */
+.chat-item {
+    display: flex;
+    padding: 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .chat-item:hover {
+        background: #f5f6f6;
+    }
+
+    .chat-item.active {
+        background: #f0f2f5;
+    }
+
+.chat-item-img img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.chat-item-info {
+    flex: 1;
+    margin-left: 15px;
+    overflow: hidden;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+    .top-row h4 {
+        color: #111b21;
+        font-size: 1rem;
+    }
+
+.time {
+    color: #667781;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.last-message {
+    color: #667781;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+    transition: opacity 0.3s ease;
+}
+
+.message-status {
+    display: flex;
+    align-items: center;
+}
+
+.unread-count {
+    background: #920454;
+    color: white;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-left: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Sohbet ��esi ta��nma animasyonu */
+.chat-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-item {
+    order: 1;
+    transition: order 0.3s ease;
+}
+
+    .chat-item:first-child {
+        order: 0;
+    }
+
+.message-status i {
+    color: #53bdeb;
+    font-size: 1rem;
+}
+
+/* Chat Area Stilleri */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f0f2f5;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #f0f2f5;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-header-user {
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    margin-left: 15px;
+}
+
+    .user-info h4 {
+        color: #111b21;
+    }
+
+    .user-info p {
+        color: #667781;
+        font-size: 0.8em;
+    }
+
+.chat-header-icons i {
+    color: #54656f;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+/* Mesaj Alan� Stilleri */
+.chat-messages {
+    flex: 1;
+    background: #efeae2;
+    padding: 20px;
+    overflow-y: auto;
+    background-image: url('https://web.whatsapp.com/img/bg-chat-tile-dark_a4be512e7195b6b733d9110b408f075d.png');
+    background-repeat: repeat;
+}
+
+.message-date {
+    text-align: center;
+    color: #54656f;
+    font-size: 0.8rem;
+    margin: 15px 0;
+    background: rgba(225, 245, 254, 0.92);
+    padding: 5px 12px;
+    border-radius: 5px;
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.message {
+    display: flex;
+    margin: 5px 0;
+    max-width: 65%;
+}
+
+    .message.received {
+        margin-right: auto;
+    }
+
+    .message.sent {
+        margin-left: auto;
+        flex-direction: row-reverse;
+    }
+
+.message-content {
+    padding: 8px 10px;
+    border-radius: 7.5px;
+    position: relative;
+}
+
+.message.received .message-content {
+    background: #fff;
+}
+
+.message.sent .message-content {
+    background: white;
+}
+
+.message-content p {
+    margin: 0;
+    padding-right: 40px;
+    line-height: 1.4;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: #667781;
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+    .message-time i {
+        font-size: 1em;
+        margin-left: 3px;
+    }
+
+.message.sent .message-time i {
+    color: #53bdeb;
+}
+
+/* Input Alan� Stilleri */
+.chat-input {
+    display: none;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+}
+
+.chat-area.active .chat-input {
+    display: flex;
+}
+
+.input-icons {
+    display: flex;
+    gap: 15px;
+}
+
+    .input-icons i {
+        color: #54656f;
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+
+.input-area {
+    flex: 1;
+    margin-right: 10px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 9px 12px;
+}
+
+    .input-area input {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 0.95rem;
+    }
+
+.send-button i {
+    color: #54656f;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.send-button.active i {
+    color: #920454;
+}
+
+/* Responsive Tasarm */
+@media (max-width: 768px) {
+    .container {
+        position: relative;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    .chat-area {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .show-chat .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .show-chat .chat-area {
+        transform: translateX(0);
+    }
+
+    .chat-header .back-button {
+        display: block;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+}
+
+@media (min-width: 769px) {
+    .chat-header .back-button {
+        display: none;
+    }
+}
+
+#messageInput {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 20px;
+    background: #f0f2f5;
+    outline: none;
+}
+
+.send-button {
+    cursor: pointer;
+    padding: 8px;
+    color: #128C7E;
+}
+
+    .send-button:hover {
+        color: #075E54;
+    }
+
+/* Tab stilleri */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+}
+
+    .tab-btn.active {
+        color: #920454;
+        border-bottom: 2px solid #920454;
+    }
+
+/* Kullanc listesi stilleri */
+.users-list {
+    overflow-y: auto;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .user-item:hover {
+        background-color: #f5f5f5;
+    }
+
+.user-item-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+    .user-item-img img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+.user-item-info {
+    flex: 1;
+}
+
+    .user-item-info h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+    }
+
+.start-chat-btn {
+    padding: 5px 10px;
+    border: none;
+    background: #920454;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+    .start-chat-btn:hover {
+        background: #920454;
+    }
+
+/* Arama kutusu stilleri */
+.search-box {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+    .search-box input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+
+.chat-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.logout-btn {
+    color: #666;
+    font-size: 20px;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+    .logout-btn:hover {
+        color: #920454;
+        background-color: rgba(146, 4, 84, 0.1);
+    }
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-profile .user-img {
+    width: 45px;
+    height: 45px;
+    margin-right: 15px;
+}
+
+.user-profile .user-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-profile .user-info h3 {
+    color: #111b21;
+    font-size: 16px;
+    margin: 0;
+    font-weight: 500;
+}
+

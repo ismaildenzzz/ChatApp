@@ -1,0 +1,141 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Chat App";
+}
+
+<script>
+    // Tüm profil resimlerini varsayılan resme ayarla
+    document.addEventListener('DOMContentLoaded', function() {
+        const defaultImage = '/images/user.png';
+        const profileImages = document.querySelectorAll('.user-img img, .chat-item-img img');
+        
+        profileImages.forEach(img => {
+            img.src = defaultImage;
+            img.onerror = function() {
+                this.src = defaultImage;
+            };
+        });
+    });
+</script>
+
+<div class="container">
+    <!-- Sol Sidebar - Sohbet Listesi -->
+    <div class="sidebar">
+        <div class="user-profile">
+            <div class="user-img">
+                <img src="@Model.CurrentUser?.ProfileImage" alt="@Model.CurrentUser?.Username">
+            </div>
+            <div class="user-info">
+                <h3>@Model.CurrentUser?.Username</h3>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="userSearch" placeholder="Kullanıcı ara...">
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="chats">Sohbetler</button>
+            <button class="tab-btn" data-tab="users">Kullanıcılar</button>
+        </div>
+
+        <div class="tab-content" id="chatsTab">
+            <div class="chat-list">
+                @if (Model.UserChats != null && Model.UserChats.Any())
+                {
+                    foreach (var chat in Model.UserChats.OrderByDescending(c => c.Messages.FirstOrDefault()?.SentAt ?? c.CreatedAt))
+                    {
+                        var lastMessage = chat.Messages.FirstOrDefault();
+                        var chatUser = chat.Users.FirstOrDefault(u => u.Id != Model.CurrentUser?.Id);
+
+                        <div class="chat-item" data-chat-id="@chat.Id" data-user-id="@chatUser?.Id">
+                            <div class="chat-item-img">
+                                <img src="@(chatUser?.ProfileImage ?? "https://via.placeholder.com/40")" alt="@chatUser?.Username">
+                            </div>
+                            <div class="chat-item-info">
+                                <div class="top-row">
+                                    <h4>@(chatUser?.Username ?? "Anonim")</h4>
+                                    <span class="time">@(lastMessage?.SentAt.ToString("HH:mm") ?? "")</span>
+                                </div>
+                                <div class="bottom-row">
+                                    <p class="last-message">@(lastMessage?.Content ?? "")</p>
+                                    @if (lastMessage != null && !lastMessage.IsRead && lastMessage.ReceiverId == Model.CurrentUser?.Id)
+                                    {
+                                        <div class="unread-count">1</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="tab-content" id="usersTab" style="display: none;">
+            <div class="users-list">
+                @if (Model.OtherUsers != null && Model.OtherUsers.Any())
+                {
+                    @foreach (var user in Model.OtherUsers)
+                    {
+                        <div class="user-item" data-user-id="@user.Id">
+                            <div class="user-item-img">
+                                <img src="@(user.ProfileImage ?? "https://via.placeholder.com/40")" alt="@user.Username">
+                            </div>
+                            <div class="user-item-info">
+                                <h4>@user.Username</h4>
+                                <button class="start-chat-btn" onclick="startNewChat(@user.Id)">Mesaj Gönder</button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Sağ Taraf - Mesajlaşma Alanı -->
+    <div class="chat-area">
+        <div class="chat-header">
+            <div class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="chat-header-user">
+                <div class="user-img">
+                    <img src="https://via.placeholder.com/40" alt="User" id="chatUserImage">
+                </div>
+                <div class="user-info">
+                    <h4 id="chatUserName">Sohbet seçiniz</h4>
+                    <p id="chatUserStatus">Çevrimiçi</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="/Account/Logout" class="logout-btn" title="Çıkış Yap">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+        <div class="chat-messages">
+            <!-- Mesajlar buraya yüklenecek -->
+        </div>
+        <div class="chat-input">
+            <div class="input-area">
+                <input type="text"
+                       id="messageInput"
+                       class="message-input"
+                       placeholder="Bir mesaj yazın..."
+                       autocomplete="off">
+            </div>
+            <button class="send-button" type="button">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script>
+        const currentUserId = @(Model.CurrentUser?.Id ?? 0);
+    </script>
+    <script src="~/js/chat.js"></script>
+}
